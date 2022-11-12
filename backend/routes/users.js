@@ -1,13 +1,18 @@
 import express from "express";
-// import { login, register } from "../controllers/auth.js";
+import { deleteUser, getUser, getUsers, updateUser } from "../controllers/user.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.send("Hello, this is auth endpoint")
-})
 
-// router.post("/register", register)
-// router.post("/login", login)
+//UPDATE
+router.put("/:id", updateUser);
+//DELETE
+router.delete("/:id", deleteUser);
+//GET
+router.get("/:id", getUser);
+//GET ALL
+router.put("/", getUsers);
+
+
 
 export default router
