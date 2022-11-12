@@ -23,9 +23,6 @@ const connect = async () => {
 mongoose.connection.on("disconnected", () => {
     console.log("MongoDB disconnected!");
 });
-mongoose.connection.on("connected", () => {
-    console.log("MongoDB connected!");
-});
 
 app.get("/", (req, res) => {
     res.send("hello first request")
@@ -40,9 +37,17 @@ app.use("/api/users", usersRoute);
 app.use("/api/hotels", hotelsRoute);
 app.use("/api/rooms", roomsRoute);
 
-app.use((req, re, next) => {
-    console.log("hi, I'm middleware");
-})
+// error handling middleware
+app.use((err, req, res, next) => {
+    const errorStatus = err.status || 500;
+    const errorMessage = err.message || "Something went wrong!";
+    return res.status(errorStatus).json({
+        success: false,
+        status: errorStatus,
+        message: errorMessage,
+        stack: err.stack,
+    });
+});
 
 app.listen(8800, () => {
     connect()
