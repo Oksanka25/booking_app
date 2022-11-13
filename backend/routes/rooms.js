@@ -1,13 +1,28 @@
 import express from "express";
-// import { login, register } from "../controllers/auth.js";
+import {
+    createRoom,
+    deleteRoom,
+    getRoom,
+    getRooms,
+    updateRoom,
+    updateRoomAvailability,
+} from "../controllers/room.js";
+import { verifyAdmin } from "../utils/verifyToken.js";
 
 const router = express.Router();
+//CREATE
+router.post("/:hotelid", verifyAdmin, createRoom);
 
-router.get("/", (req, res) => {
-    res.send("Hello, this is auth endpoint")
-})
+//UPDATE
+router.put("/availability/:id", updateRoomAvailability);
+router.put("/:id", verifyAdmin, updateRoom);
+//DELETE
+router.delete("/:id/:hotelid", verifyAdmin, deleteRoom);
+//GET
 
-// router.post("/register", register)
-// router.post("/login", login)
+router.get("/:id", getRoom);
+//GET ALL
 
-export default router
+router.get("/", getRooms);
+
+export default router;
